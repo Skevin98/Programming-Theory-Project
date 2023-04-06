@@ -18,10 +18,14 @@ public class Dog : Monster
     // Update is called once per frame
     void Update()
     {
-        // /normalized return the direction of the vector. ie Vector3(0,15,3).normalized === Vector3(0,1,1)
-        monsterRb.AddForce(speed * Time.deltaTime * (player.transform.position - transform.position).normalized, ForceMode.Acceleration);
-        //transform.Translate(speed * Time.deltaTime * (player.transform.position - transform.position));
-        if (livePoints <= 0) KillMonster();
+        if (!GameManager.gameOver)
+        {
+            // /normalized return the direction of the vector. ie Vector3(0,15,3).normalized === Vector3(0,1,1)
+            monsterRb.AddForce(speed * Time.deltaTime * (player.transform.position - transform.position).normalized, ForceMode.Acceleration);
+            //transform.Translate(speed * Time.deltaTime * (player.transform.position - transform.position));
+            if (livePoints <= 0) KillMonster();
+        }
+        
     }
 
     protected override void KillMonster()

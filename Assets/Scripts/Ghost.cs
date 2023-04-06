@@ -14,8 +14,11 @@ public class Ghost : Monster
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(speed * Time.deltaTime * (player.transform.position - transform.position).normalized);
-        if (livePoints <= 0) KillMonster();
+        if (!GameManager.gameOver)
+        {
+            transform.Translate(speed * Time.deltaTime * (player.transform.position - transform.position).normalized);
+            if (livePoints <= 0) KillMonster();
+        }
     }
 
     

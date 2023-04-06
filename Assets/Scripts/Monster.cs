@@ -13,26 +13,34 @@ public class Monster : MonoBehaviour
     [SerializeField]
     protected GameObject player;
 
-    
+    protected GameManager gameManager;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         monsterRb = GetComponent<Rigidbody>();
         player = GameObject.Find("Player");
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        transform.Translate(speed * Time.deltaTime * (player.transform.position - transform.position).normalized);
-        if (livePoints <= 0) KillMonster();
+        if (!GameManager.gameOver)
+        {
+            transform.Translate(speed * Time.deltaTime * (player.transform.position - transform.position).normalized);
+            if (livePoints <= 0) KillMonster();
+        }
+        
     }
 
     protected virtual void KillMonster()
     {
+
         Destroy(gameObject);
+        
     }
 
 

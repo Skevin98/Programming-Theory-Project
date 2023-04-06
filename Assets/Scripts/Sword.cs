@@ -30,7 +30,7 @@ public class Sword : MonoBehaviour
         // To change a object pivot rotation, create an empty parent and make it rotate
         // An make sure to use locale- coordinates for movements and positions.
         transform.localPosition = transform.parent.localPosition + offset;
-        if (Input.GetKey(KeyCode.X) && !gameManager.gameOver)
+        if (Input.GetKey(KeyCode.X) && !GameManager.gameOver)
         {
             transform.parent.Rotate(Vector3.back,Time.deltaTime * swing, Space.Self);
             //Debug.Log("Attack");

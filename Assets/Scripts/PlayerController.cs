@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    
-    
+
+    [SerializeField]
+    int lifePoints = 5;
 
     [SerializeField]
     float playerSpeed = 5;
@@ -17,15 +18,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     bool isOnGround = true;
 
-    private GameManager gameManager;
+    // private GameManager gameManager;
 
-    
-
-    /*[SerializeField]
-    bool doubleJump = false;*/
-
-    /*[SerializeField]
-    float doubleJumpForce = 15;*/
 
     private Rigidbody playerRb;
 
@@ -35,7 +29,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        //gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -45,7 +39,7 @@ public class PlayerController : MonoBehaviour
 
         transform.Translate(horizontalInput * Time.deltaTime * playerSpeed * Vector3.right);
 
-        if (Input.GetKeyDown(KeyCode.Space) && isOnGround && !gameManager.gameOver)
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isOnGround = false;
@@ -53,19 +47,10 @@ public class PlayerController : MonoBehaviour
 
             // dirtParticle.Stop();
             // playerAudio.PlayOneShot(jumpSound, 1.0f);
-            // doubleJump = true;
         }
 
         
 
-        //if (Input.GetKeyDown(KeyCode.Space) && !isOnGround && doubleJump && !gameOver)
-        //{
-        //    playerRb.AddForce(Vector3.up * doubleJumpForce, ForceMode.Impulse);
-        //    //playerAnim.SetTrigger("Jump_trig");
-        //    //dirtParticle.Stop();
-        //    doubleJump = false;
-        //    //playerAudio.PlayOneShot(jumpSound, 1.0f);
-        //}
 
 
     }
@@ -73,20 +58,35 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 
-        if (collision.gameObject.CompareTag("Ground") && !gameManager.gameOver)
+        if (collision.gameObject.CompareTag("Ground") && !GameManager.gameOver)
         {
             isOnGround = true;
             // dirtParticle.Play();
         }
-        /*else if (collision.gameObject.CompareTag("Obstacle"))
+        else if (collision.gameObject.CompareTag("Monster"))
         {
-            Debug.Log("Game Over");
-            gameOver = true;
+            lifePoints--;
+            Debug.Log($"Life points : {lifePoints}");
+            if (lifePoints <=0)
+            {
+                PlayerGameOver();
+            }
+
+
+
+
             // dirtParticle.Stop();
             // explosionParticle.Play();
             // playerAudio.PlayOneShot(crashSound);
             // playerAnim.SetBool("Death_b", true);
             // playerAnim.SetInteger("DeathType_int", 2);
-        }*/
+        }
+    }
+
+    private void PlayerGameOver()
+    {
+        Destroy(gameObject);
+        Debug.Log("Game Over");
+        GameManager.gameOver = true;
     }
 }
